@@ -139,9 +139,12 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource{
             guard let field = sheet.textFields?.first, let newName = field.text, !newName.isEmpty else{return}
             self?.editItem(item: itm, newName: newName)
         }))
-        
- 
+
+
         present(sheet, animated: true)
+   
+        
+     
        
     }
     
@@ -180,6 +183,7 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
+    
     }
 
 
