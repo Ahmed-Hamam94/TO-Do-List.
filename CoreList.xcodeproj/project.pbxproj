@@ -17,6 +17,7 @@
 		F7D94CCA29456D1B001FD9AD /* ToDoListItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D94CC829456D1B001FD9AD /* ToDoListItem+CoreDataClass.swift */; };
 		F7D94CCB29456D1B001FD9AD /* ToDoListItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D94CC929456D1B001FD9AD /* ToDoListItem+CoreDataProperties.swift */; };
 		F7D94CCE29456E92001FD9AD /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D94CCD29456E92001FD9AD /* ListTableViewCell.swift */; };
+		F7EC44BD29A0EC0D00B2ACE1 /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EC44BC29A0EC0D00B2ACE1 /* CoreData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		F7D94CC829456D1B001FD9AD /* ToDoListItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDoListItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		F7D94CC929456D1B001FD9AD /* ToDoListItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDoListItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		F7D94CCD29456E92001FD9AD /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		F7EC44BC29A0EC0D00B2ACE1 /* CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				F7D94CCC29456D9C001FD9AD /* ToDoListItem */,
 				F7D94CB129456C89001FD9AD /* AppDelegate.swift */,
 				F7D94CB329456C89001FD9AD /* SceneDelegate.swift */,
+				F7EC44BC29A0EC0D00B2ACE1 /* CoreData.swift */,
 				F7D94CB529456C89001FD9AD /* ViewController.swift */,
 				F7D94CCD29456E92001FD9AD /* ListTableViewCell.swift */,
 				F7D94CB729456C89001FD9AD /* Main.storyboard */,
@@ -162,6 +165,7 @@
 				F7D94CB629456C89001FD9AD /* ViewController.swift in Sources */,
 				F7D94CB229456C89001FD9AD /* AppDelegate.swift in Sources */,
 				F7D94CBC29456C89001FD9AD /* CoreList.xcdatamodeld in Sources */,
+				F7EC44BD29A0EC0D00B2ACE1 /* CoreData.swift in Sources */,
 				F7D94CCA29456D1B001FD9AD /* ToDoListItem+CoreDataClass.swift in Sources */,
 				F7D94CCB29456D1B001FD9AD /* ToDoListItem+CoreDataProperties.swift in Sources */,
 				F7D94CB429456C89001FD9AD /* SceneDelegate.swift in Sources */,
