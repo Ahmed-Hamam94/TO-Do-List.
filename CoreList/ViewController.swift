@@ -11,14 +11,13 @@ import CoreData
 class ViewController: UIViewController {
   
     @IBOutlet weak var tableView: UITableView!
-    let appdelegat = UIApplication.shared.delegate as! AppDelegate
-    var viewContext : NSManagedObjectContext?
-    private var arrItem = [ToDoListItem]()
+    var coreDataPro : CoreDataProtocol?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewContext = appdelegat.persistentContainer.viewContext
-        getItem()
+        coreDataPro = CoreData()
+        coreDataPro?.getItem()
         setUpTable()
     }
     
@@ -29,42 +28,7 @@ class ViewController: UIViewController {
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.backgroundColor = .lightGray
     }
-    //###############################
-    func saveItem(name:String){
-        guard let viewContext = viewContext else{return}
-        let newItem = ToDoListItem(context: viewContext)
-        newItem.name = name
-        newItem.createdAt = Date()
-        appdelegat.saveContext()
-        getItem()
-    }
-    //###################################
-    func getItem(){
-        guard let viewContext = viewContext else{return}
-        do{
-            arrItem = try viewContext.fetch(ToDoListItem.fetchRequest())
-            tableView.reloadData()
-        }catch{
-            print(error)
-        }
-    }
-    //######################################
-    func deleteItem(item:ToDoListItem){
-        viewContext?.delete(item)
-        do{
-           try viewContext?.save()
-            getItem()
-        }catch{
-            print(error)
-        }
-    }
-    //#################################
-    func editItem(item:ToDoListItem, newName:String){
-        item.name = newName
-        appdelegat.saveContext()
-        getItem()
-    }
-    //#################################
+  
     @IBAction func addButton(_ sender: Any) {
         let alert = UIAlertController(title: "New Item", message: nil, preferredStyle: .alert)
         alert.addTextField { (textField) in
@@ -73,8 +37,7 @@ class ViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Submit", style: .default,handler: { [weak self]_ in
             guard let field = alert.textFields?.first, let text = field.text, !text.isEmpty else{return}
           
-            self?.saveItem(name: text)
-        }))
+            self?.coreDataPro?.saveItem(name: text, tableView: (self?.tableView)!)        }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel,handler: nil))
         present(alert, animated: true)
     }
@@ -87,7 +50,7 @@ class ViewController: UIViewController {
 
 extension ViewController : UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
-        return arrItem.count
+        return coreDataPro?.arrItem.count ?? 1
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 5.00
@@ -101,10 +64,10 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource{
                return headerView
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let itm = arrItem[indexPath.section]
+        let itm = coreDataPro?.arrItem[indexPath.section]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ListTableViewCell
        // cell.itemToDoLbl.text = "  \(itm.name ?? "")"
-       cell.textLabel?.text = "  \(itm.name ?? "")"
+        cell.textLabel?.text = "  \(itm?.name ?? "")"
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = .italicSystemFont(ofSize: 23)
         cell.textLabel?.textColor     = UIColor.black
@@ -130,15 +93,15 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        let itm = arrItem[indexPath.section]
+        let itm = coreDataPro?.arrItem[indexPath.section]
+        guard let itm = itm else{return}
 
         let sheet = UIAlertController(title: "Created At", message: "\(itm.createdAt!.formatted(date: Date.FormatStyle.DateStyle.abbreviated, time: .omitted))", preferredStyle: .alert)
         sheet.addTextField(configurationHandler: nil)
         sheet.textFields?.first?.text = itm.name
         sheet.addAction(UIAlertAction(title: "OK", style: .cancel,handler: { [weak self]_ in
             guard let field = sheet.textFields?.first, let newName = field.text, !newName.isEmpty else{return}
-            self?.editItem(item: itm, newName: newName)
-        }))
+            self?.coreDataPro?.editItem(item: itm, newName: newName, tableView: tableView)        }))
 
 
         present(sheet, animated: true)
@@ -165,13 +128,11 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        arrItem.swapAt(sourceIndexPath.row, destinationIndexPath.row)
-    }
+        coreDataPro?.arrItem.swapAt(sourceIndexPath.row, destinationIndexPath.row)    }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title: "") { action, view, completionHandler in
-            self.deleteItem(item: self.arrItem[indexPath.section])
-
+            self.coreDataPro?.deleteItem(item: self.coreDataPro?.arrItem[indexPath.section] ?? ToDoListItem(), tableView: tableView)
             completionHandler(true)
         }
       
